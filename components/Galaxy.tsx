@@ -5,6 +5,7 @@ import { Canvas } from "@react-three/fiber";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
 import StarField from "@/components/StarField";
+import SpiralDisc from "@/components/SpiralDisc";
 import CameraController, {
   type CameraHandle,
   type ViewPreset,
@@ -28,6 +29,7 @@ export default function Galaxy() {
         dpr={[1, 2]}
       >
         <color attach="background" args={["#000000"]} />
+        <SpiralDisc />
         <Suspense fallback={null}>
           <StarField />
         </Suspense>
