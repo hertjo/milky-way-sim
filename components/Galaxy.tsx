@@ -12,6 +12,8 @@ import CameraController, {
   type ViewPreset,
 } from "@/components/CameraController";
 import ViewToggle from "@/components/hud/ViewToggle";
+import ScaleBar from "@/components/hud/ScaleBar";
+import InfoChip from "@/components/hud/InfoChip";
 
 export default function Galaxy() {
   const cameraRef = useRef<CameraHandle | null>(null);
@@ -47,6 +49,8 @@ export default function Galaxy() {
       </Canvas>
 
       <ViewToggle current={preset} onChange={onChangeView} />
+      <ScaleBar />
+      <InfoChip starCount={250_000} />
     </div>
   );
 }
