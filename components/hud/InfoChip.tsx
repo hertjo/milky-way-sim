@@ -20,7 +20,7 @@ export default function InfoChip({ starCount }: Props) {
         {formatCount(starCount)} Gaia DR3 stars
       </div>
       <div className="mt-0.5 text-white/45">
-        + procedural disc &amp; core
+        + 1.1k Cepheids &middot; 199 Reid masers
       </div>
     </div>
   );
