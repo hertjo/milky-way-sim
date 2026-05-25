@@ -10,10 +10,14 @@ import fragShader from "@/shaders/spiral.frag";
 const DISC_RADIUS_KPC = 22; // visible artist's-impression radius
 
 type Props = {
+  timeRef: React.MutableRefObject<number>;
   rotationPeriodSec?: number; // wall-clock for a full spiral revolution
 };
 
-export default function SpiralDisc({ rotationPeriodSec = 240 }: Props) {
+export default function SpiralDisc({
+  timeRef,
+  rotationPeriodSec = 240,
+}: Props) {
   const matRef = useRef<THREE.ShaderMaterial>(null);
 
   const uniforms = useMemo(
@@ -25,9 +29,9 @@ export default function SpiralDisc({ rotationPeriodSec = 240 }: Props) {
     [],
   );
 
-  useFrame((state) => {
+  useFrame(() => {
     if (!matRef.current) return;
-    const t = state.clock.elapsedTime;
+    const t = timeRef.current;
     matRef.current.uniforms.uTime.value = t;
     matRef.current.uniforms.uRotation.value =
       (t / rotationPeriodSec) * Math.PI * 2;
