@@ -2,6 +2,7 @@
 
 import { Suspense, useCallback, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
 import StarField from "@/components/StarField";
 import CameraController, {
@@ -31,6 +32,14 @@ export default function Galaxy() {
           <StarField />
         </Suspense>
         <CameraController controlsRef={cameraRef} />
+        <EffectComposer>
+          <Bloom
+            intensity={0.55}
+            luminanceThreshold={0.55}
+            luminanceSmoothing={0.25}
+            mipmapBlur
+          />
+        </EffectComposer>
       </Canvas>
 
       <ViewToggle current={preset} onChange={onChangeView} />

@@ -22,9 +22,11 @@ void main() {
 
   // Perspective-correct point size: keep apparent angular size roughly
   // proportional to brightness, with a floor so far stars are still
-  // visible.
-  float baseSize = mix(1.4, 12.0, b) * uSizeScale * uPixelRatio;
-  gl_PointSize = baseSize * (200.0 / -mv.z);
+  // visible. Scaling factor is intentionally conservative so the
+  // densely-clustered near-Sun region doesn't pile up into a white
+  // wash under bloom.
+  float baseSize = mix(0.8, 4.5, b) * uSizeScale * uPixelRatio;
+  gl_PointSize = baseSize * clamp(30.0 / -mv.z, 0.8, 3.0);
 
   vColor = aColor;
   vIntensity = b;
