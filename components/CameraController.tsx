@@ -18,11 +18,11 @@ type Props = {
 };
 
 const PRESETS: Record<ViewPreset, { pos: [number, number, number]; tgt: [number, number, number] }> = {
-  // Looking down on the disk plane from the north galactic pole.
-  top:  { pos: [SUN.x * 0.5, 0, 18],          tgt: [SUN.x * 0.5, 0, 0] },
-  // Looking along the disk plane from outside, so the local Gaia
-  // volume appears as a flat band — the "Milky Way" the eye sees.
-  edge: { pos: [SUN.x * 0.4, 12, 1.0],        tgt: [SUN.x * 0.4, 0, 0] },
+  // Top-down on the galactic plane, centered on Sgr A*. Far enough to
+  // see the full disk of Cepheid tracers (~±30 kpc).
+  top:  { pos: [0, 0, 45],                tgt: [0, 0, 0] },
+  // Edge-on along the disk plane, also centered on Sgr A*.
+  edge: { pos: [0, 35, 2.0],              tgt: [0, 0, 0] },
   // Up close in the solar neighborhood.
   sun:  { pos: [SUN.x - 0.6, SUN.y, SUN.z + 0.3], tgt: [SUN.x, SUN.y, SUN.z] },
 };
@@ -47,10 +47,10 @@ export default function CameraController({ controlsRef }: Props) {
   const { camera } = useThree();
 
   useEffect(() => {
-    // Snap to "edge" preset on first mount (no animation) — the local
-    // Gaia neighborhood is a flat puffy disk and edge-on is the most
-    // informative starting view.
-    const initial = PRESETS.edge;
+    // Snap to "top" preset on first mount (no animation) — the
+    // Cepheid tracers map out the spiral arms most clearly from above
+    // the galactic plane.
+    const initial = PRESETS.top;
     camera.position.set(...initial.pos);
     const c = orbitRef.current as unknown as {
       target: THREE.Vector3;

@@ -5,6 +5,8 @@ import { Canvas } from "@react-three/fiber";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
 import StarField from "@/components/StarField";
+import Cepheids from "@/components/Cepheids";
+import SgrAStar from "@/components/SgrAStar";
 import NamedStars from "@/components/NamedStars";
 import CameraController, {
   type CameraHandle,
@@ -17,7 +19,7 @@ import LabelsToggle from "@/components/hud/LabelsToggle";
 
 export default function Galaxy() {
   const cameraRef = useRef<CameraHandle | null>(null);
-  const [preset, setPreset] = useState<ViewPreset>("edge");
+  const [preset, setPreset] = useState<ViewPreset>("top");
   const [labelsVisible, setLabelsVisible] = useState(false);
 
   // Animation clock (kept around for any future motion uniforms).
@@ -50,7 +52,9 @@ export default function Galaxy() {
         <color attach="background" args={["#000000"]} />
         <Suspense fallback={null}>
           <StarField />
+          <Cepheids />
         </Suspense>
+        <SgrAStar />
         <NamedStars visible={labelsVisible} />
         <CameraController controlsRef={cameraRef} />
         <EffectComposer>
