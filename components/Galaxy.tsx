@@ -7,6 +7,7 @@ import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import StarField from "@/components/StarField";
 import SpiralDisc from "@/components/SpiralDisc";
 import GalacticCore from "@/components/GalacticCore";
+import NamedStars from "@/components/NamedStars";
 import CameraController, {
   type CameraHandle,
   type ViewPreset,
@@ -15,11 +16,13 @@ import ViewToggle from "@/components/hud/ViewToggle";
 import ScaleBar from "@/components/hud/ScaleBar";
 import InfoChip from "@/components/hud/InfoChip";
 import PlayToggle from "@/components/hud/PlayToggle";
+import LabelsToggle from "@/components/hud/LabelsToggle";
 
 export default function Galaxy() {
   const cameraRef = useRef<CameraHandle | null>(null);
   const [preset, setPreset] = useState<ViewPreset>("top");
   const [playing, setPlaying] = useState(true);
+  const [labelsVisible, setLabelsVisible] = useState(true);
 
   // Shared time clock for the rotation, in seconds. Lives in a ref so
   // pausing doesn't reconcile the tree and per-frame consumers can
@@ -60,6 +63,7 @@ export default function Galaxy() {
         <Suspense fallback={null}>
           <StarField />
         </Suspense>
+        <NamedStars visible={labelsVisible} />
         <CameraController controlsRef={cameraRef} />
         <EffectComposer>
           <Bloom
@@ -73,6 +77,10 @@ export default function Galaxy() {
 
       <ViewToggle current={preset} onChange={onChangeView} />
       <PlayToggle playing={playing} onToggle={onTogglePlay} />
+      <LabelsToggle
+        visible={labelsVisible}
+        onToggle={() => setLabelsVisible((v) => !v)}
+      />
       <ScaleBar />
       <InfoChip starCount={250_000} />
     </div>
