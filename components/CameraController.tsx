@@ -18,8 +18,12 @@ type Props = {
 };
 
 const PRESETS: Record<ViewPreset, { pos: [number, number, number]; tgt: [number, number, number] }> = {
-  top:  { pos: [0, 0, 22],                tgt: [0, 0, 0] },
-  edge: { pos: [0, 25, 0.5],              tgt: [0, 0, 0] },
+  // Looking down on the disk plane from the north galactic pole.
+  top:  { pos: [SUN.x * 0.5, 0, 18],          tgt: [SUN.x * 0.5, 0, 0] },
+  // Looking along the disk plane from outside, so the local Gaia
+  // volume appears as a flat band — the "Milky Way" the eye sees.
+  edge: { pos: [SUN.x * 0.4, 12, 1.0],        tgt: [SUN.x * 0.4, 0, 0] },
+  // Up close in the solar neighborhood.
   sun:  { pos: [SUN.x - 0.6, SUN.y, SUN.z + 0.3], tgt: [SUN.x, SUN.y, SUN.z] },
 };
 
@@ -43,15 +47,17 @@ export default function CameraController({ controlsRef }: Props) {
   const { camera } = useThree();
 
   useEffect(() => {
-    // Snap to "top" preset on first mount (no animation).
-    const top = PRESETS.top;
-    camera.position.set(...top.pos);
+    // Snap to "edge" preset on first mount (no animation) — the local
+    // Gaia neighborhood is a flat puffy disk and edge-on is the most
+    // informative starting view.
+    const initial = PRESETS.edge;
+    camera.position.set(...initial.pos);
     const c = orbitRef.current as unknown as {
       target: THREE.Vector3;
       update: () => void;
     } | null;
     if (c) {
-      c.target.set(...top.tgt);
+      c.target.set(...initial.tgt);
       c.update();
     }
 

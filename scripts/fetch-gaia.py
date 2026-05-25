@@ -26,15 +26,25 @@ TAP_URL = "https://gea.esac.esa.int/tap-server/tap/sync"
 
 # ADQL query.
 #
-# bp_rp is NULL for many faint stars; we keep them only if they have a
-# valid color, since the visualization keys star RGB off bp_rp.
+# Goals for the cut:
+#   - Enough stars (~10^6) that the galactic disk emerges naturally
+#     when viewed top-down.
+#   - Trim by parallax SNR (`parallax_over_error > 5`) so distance is
+#     trustworthy and the 3D positions aren't smeared by noise.
+#   - Cap apparent magnitude at G < 15.5 so we don't drown in the
+#     Gaia faint-end where errors blow up.
+#   - Require valid bp_rp (the renderer keys star RGB off it).
+#
+# We don't restrict by absolute magnitude or color, so the sample
+# includes the local main sequence + giants + OB-star spiral tracers.
 QUERY_TEMPLATE = """
 SELECT TOP {limit}
     ra, dec, parallax, phot_g_mean_mag, bp_rp
 FROM gaiadr3.gaia_source
-WHERE parallax > 0
+WHERE parallax > 0.05
+  AND parallax_over_error > 3
+  AND phot_g_mean_mag < 17.5
   AND bp_rp IS NOT NULL
-  AND phot_g_mean_mag IS NOT NULL
 ORDER BY phot_g_mean_mag ASC
 """
 
