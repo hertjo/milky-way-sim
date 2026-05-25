@@ -1,16 +1,28 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useCallback, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
 
 import StarField from "@/components/StarField";
+import CameraController, {
+  type CameraHandle,
+  type ViewPreset,
+} from "@/components/CameraController";
+import ViewToggle from "@/components/hud/ViewToggle";
 
 export default function Galaxy() {
+  const cameraRef = useRef<CameraHandle | null>(null);
+  const [preset, setPreset] = useState<ViewPreset>("top");
+
+  const onChangeView = useCallback((p: ViewPreset) => {
+    setPreset(p);
+    cameraRef.current?.setPreset(p);
+  }, []);
+
   return (
-    <div className="h-full w-full bg-black">
+    <div className="relative h-full w-full bg-black">
       <Canvas
-        camera={{ position: [0, 0, 40], fov: 50, near: 0.1, far: 5000 }}
+        camera={{ position: [0, 0, 22], fov: 50, near: 0.1, far: 5000 }}
         gl={{ antialias: true, alpha: false }}
         dpr={[1, 2]}
       >
@@ -18,14 +30,10 @@ export default function Galaxy() {
         <Suspense fallback={null}>
           <StarField />
         </Suspense>
-        <OrbitControls
-          enableDamping
-          dampingFactor={0.08}
-          minDistance={0.5}
-          maxDistance={2000}
-          makeDefault
-        />
+        <CameraController controlsRef={cameraRef} />
       </Canvas>
+
+      <ViewToggle current={preset} onChange={onChangeView} />
     </div>
   );
 }
