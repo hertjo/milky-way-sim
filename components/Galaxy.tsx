@@ -6,6 +6,7 @@ import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
 import StarField from "@/components/StarField";
 import Cepheids from "@/components/Cepheids";
+import Masers from "@/components/Masers";
 import SgrAStar from "@/components/SgrAStar";
 import NamedStars from "@/components/NamedStars";
 import CameraController, {
@@ -53,6 +54,7 @@ export default function Galaxy() {
         <Suspense fallback={null}>
           <StarField />
           <Cepheids />
+          <Masers />
         </Suspense>
         <SgrAStar />
         <NamedStars visible={labelsVisible} />
