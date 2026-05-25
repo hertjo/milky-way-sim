@@ -6,6 +6,7 @@ import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
 import StarField from "@/components/StarField";
 import SpiralDisc from "@/components/SpiralDisc";
+import GalacticCore from "@/components/GalacticCore";
 import CameraController, {
   type CameraHandle,
   type ViewPreset,
@@ -30,6 +31,7 @@ export default function Galaxy() {
       >
         <color attach="background" args={["#000000"]} />
         <SpiralDisc />
+        <GalacticCore />
         <Suspense fallback={null}>
           <StarField />
         </Suspense>
